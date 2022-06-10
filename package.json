@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@grafana/data": "next",
-    "@grafana/toolkit": "next",
+    "@grafana/toolkit": "^8.4.7",
     "@types/angular": "1.8.0",
     "@types/datatables.net": "1.10.19",
     "@types/datatables.net-buttons": "1.4.3",
@@ -60,8 +60,5 @@
     "jest-junit": "^12.0.0",
     "popper.js": "1.16.1",
     "ts-jest": "26.4.4"
-  },
-  "engines": {
-    "node": ">=12 <13"
   }
 }

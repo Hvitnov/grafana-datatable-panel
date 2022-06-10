@@ -258,7 +258,7 @@ export class DatatableRenderer {
     return v;
   }
 
-  /**
+  /** Function generates rows of data to the table
    * [generateFormattedData description]
    * @param  {[type]} rowData [description]
    * @return {[type]}         [description]
@@ -354,6 +354,8 @@ export class DatatableRenderer {
     let columnAlias = columnName;
     if (this.panel.columnAliases !== undefined) {
       for (let i = 0; i < this.panel.columnAliases.length; i++) {
+        //console.log(i);
+        //alert(i);
         if (this.panel.columnAliases[i].name === columnName) {
           columnAlias = this.panel.columnAliases[i].alias;
           break;
@@ -393,9 +395,9 @@ export class DatatableRenderer {
   render() {
     const tableHolderId = '#datatable-panel-table-' + this.panel.id;
     try {
-      if ($.fn.dataTable.isDataTable(tableHolderId)) {
+      if ($.fn.dataTable.isDataTable(tableHolderId)) { /** this function is to check if a table_id  is already a DataTable or not*/
         const aDT = $(tableHolderId).DataTable();
-        aDT.destroy();
+        aDT.destroy(); /** destroys the duplicate table*/
         $(tableHolderId).empty();
       }
     } catch (err) {
@@ -450,6 +452,14 @@ export class DatatableRenderer {
         width: columnWidthHint,
         className: columnClassName,
       });
+
+      columns.push({
+        data: null,
+        className: "dt-center editor-delete",
+        defaultContent: '<i class="fa fa-trash"/>',
+        orderable: false,
+      });
+
       columnDefs.push({
         targets: i + rowNumberOffset,
         data: function(row: any, type: any, val: any, meta: any) {
@@ -707,7 +717,24 @@ export class DatatableRenderer {
       const r = c.getBoundingClientRect();
       console.log(r);
     }
+    #datatable-panel-table-' + this.panel.id
     */
+
+    /**
+    const editor = new $.fn.dataTable.Editor('#datatable-panel-table-' + this.panel.id);
+
+    for (let i = 0; i < this.table.columns.length; i++) {
+        $('this.panel.id').on('click', 'td.editor-delete', function (e) {
+            e.preventDefault();
+
+            editor.remove( $(this).closest('tr'), {
+                title: 'Delete record',
+                message: 'Are you sure you wish to remove this record?',
+                buttons: 'Delete'
+            } );
+        } );
+    }*/
+
     const newDT = $datatable.DataTable(tableOptions);
 
     // hide columns that are marked hidden
