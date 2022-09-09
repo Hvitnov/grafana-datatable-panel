@@ -182,3 +182,27 @@ make rpm
 ## Acknowledgements
 
 This panel is based on the "Table" panel by GrafanaLabs
+
+## Grafana development on Watch Mode using Yarn:
+
+This is a guide on how to run changes for Grafana plugins in Watch Mode without signing the plugins – using the datatable panel plugin from: https://github.com/Hvitnov/grafana-datatable-panel/tree/master/src
+
+Prerequisites:
+- Install Yarn and Nodes.js
+- Copy make a new copy of the default.ini and name it custom.ini. This new file will override default.ini. 
+- Clone plugin and make sure to place the plugin in the plugin directory: 
+- [paths]
+plugins = "/path/to/grafana-plugins"
+- In the custom.ini config-file set the property 'app_mode = development' 
+- In the plugin folder, check if the package.json file is restricted to a specific engine – if so, remove it otherwise we won't be able to install yarn   
+"engines": {
+  "node": ">=12 <13"
+}
+- Open terminal and move to the plugin folder in your plugin directory. 
+
+- Write 'yarn add @grafana/toolkit' to install yarn 
+
+- Write 'yarn watch' to compile the plugin live (of course you have to refresh the browser to see the changes) 
+Note when you run it in watch mode it will probably prompt error messages, and it's usually nothing that important. Just try to change up the code and you will see the terminal compile automatically. 
+
+ 
