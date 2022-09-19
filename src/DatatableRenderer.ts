@@ -393,7 +393,7 @@ export class DatatableRenderer {
    * @return {[Boolean]} True if loaded without errors
    */
   render() {
-    const tableHolderId = '#datatable-panel-table-' + this.panel.id;
+    const tableHolderId = '#datatable-panel-table-' + this.panel.id; /* id name referred to when receiving error message relating to adding new column*/
     try {
       if ($.fn.dataTable.isDataTable(tableHolderId)) { /** this function is to check if a table_id  is already a DataTable or not*/
         const aDT = $(tableHolderId).DataTable();
@@ -424,6 +424,24 @@ export class DatatableRenderer {
         width: '1%',
       });
     }
+
+    /*
+    this.table.columns.push({
+        text: "slut",
+        sort: false,
+        type: 'delete'
+    });
+
+
+    columns.push({
+        title: 'slet',
+        data: null,
+        className: "dt-center editor-delete",
+        defaultContent: '<i class="fa fa-trash"/>',
+        orderable: false
+    });
+    */
+
     for (let i = 0; i < this.table.columns.length; i++) {
       const columnAlias = this.getColumnAlias(this.table.columns[i].text);
       const columnWidthHint = this.getColumnWidthHint(this.table.columns[i].text);
@@ -446,19 +464,13 @@ export class DatatableRenderer {
       // NOTE: the width below is a "hint" and will be overridden as needed, this lets most tables show timestamps
       // with full width
       /* jshint loopfunc: true */
-      columns.push({
-        title: columnAlias,
-        type: columnType,
-        width: columnWidthHint,
-        className: columnClassName,
-      });
 
       columns.push({
-        data: null,
-        className: "dt-center editor-delete",
-        defaultContent: '<i class="fa fa-trash"/>',
-        orderable: false,
-      });
+            title: columnAlias,
+            type: columnType,
+            width: columnWidthHint,
+            className: columnClassName,
+          });
 
       columnDefs.push({
         targets: i + rowNumberOffset,
@@ -626,6 +638,30 @@ export class DatatableRenderer {
       });
     }
 
+    columns.push({
+        title: 'edit',
+        data: null,
+        className: "dt-center editor-edit",
+        defaultContent: '<i class="fa fa-pencil"/>',
+        orderable: false
+    });
+
+    // Delete a record
+    $('#datatable-panel-table-' + this.panel.id).on('click', 'td.editor-edit', function (e) {
+        console.log("edit pushed");
+        /*
+        e.preventDefault();
+
+        editor.remove( $(this).closest('tr'), {
+            title: 'Delete record',
+            message: 'Are you sure you wish to remove this record?',
+            buttons: 'Delete'
+
+        } );
+        */
+    } );
+
+
     try {
       let shouldDestroy = false;
       if ($.fn.dataTable.isDataTable('#datatable-panel-table-' + this.panel.id)) {
@@ -650,7 +686,6 @@ export class DatatableRenderer {
     }
     // pass the formatted rows into the datatable
     const formattedData = this.generateFormattedData(this.table.rows);
-
     if (this.panel.rowNumbersEnabled) {
       // shift the data to the right
     }
