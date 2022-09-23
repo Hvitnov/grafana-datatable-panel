@@ -669,7 +669,7 @@ export class DatatableRenderer {
             //try {
               //const resp = await getBackendSrv().datasourceRequest({
               const resp = getBackendSrv().datasourceRequest({
-                method: 'GET',
+                method: 'POST',
                 //url: 'api/tsdb/query',
                 url: 'api/ds/query',
                 data: {
