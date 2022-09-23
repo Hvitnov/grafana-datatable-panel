@@ -25,6 +25,7 @@
     "url": "https://github.com/briangann/grafana-datatable-panel/issues"
   },
   "dependencies": {
+    "@grafana/runtime": "^9.1.5",
     "@types/file-saver": "2.0.1",
     "@types/mark.js": "^8.11.5",
     "datatables.mark.js": "2.1.0",

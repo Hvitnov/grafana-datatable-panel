@@ -8,6 +8,11 @@ import 'datatables.net';
 import 'mark.js';
 import 'datatables.mark.js';
 
+//buttonPanel imports
+//import React from 'react'; <--- only necessary for buttons
+import { AppEvents } from '@grafana/data';
+import { getBackendSrv, getDataSourceSrv, SystemJS } from '@grafana/runtime';
+
 export class DatatableRenderer {
   formatters: any;
   colorState: any;
@@ -639,26 +644,60 @@ export class DatatableRenderer {
     }
 
     columns.push({
-        title: 'edit',
+        title: 'Delete',
         data: null,
-        className: "dt-center editor-edit",
-        defaultContent: '<i class="fa fa-pencil"/>',
+        className: "dt-center editor-delete",
+        defaultContent: '<i class="fa fa-trash"/>',
         orderable: false
     });
 
+
     // Delete a record
-    $('#datatable-panel-table-' + this.panel.id).on('click', 'td.editor-edit', function (e) {
-        console.log("edit pushed");
-        /*
-        e.preventDefault();
+    $('#datatable-panel-table-' + this.panel.id).on('click', 'td.editor-delete', function (e) {
+        //console.log("Delete pushed");
+        //async () => {
+            const json_example = '{"rawSql": "update input_gekko.gekko set gps_longitude = 12.45 where gekko_id = 1;", "format": "table"}'
+            const payload = JSON.parse(json_example);
+            console.log("1");
+            console.log(payload);
+            //const ds = await getDataSourceSrv().get("PostgreSQL");
+            const ds = getDataSourceSrv().get("PostgreSQL");
+            console.log("2");
+            console.log(ds);
+            const datasource_uid = {uid: "rsT9iRmnk"};
+            console.log(datasource_uid);
+            //try {
+              //const resp = await getBackendSrv().datasourceRequest({
+              const resp = getBackendSrv().datasourceRequest({
+                method: 'POST',
+                //url: 'api/tsdb/query',
+                url: 'api/ds/query',
+                data: {
+                  queries: [
+                    {
+                      datasource: datasource_uid,
+                      refId: '1',
+                      ...payload,
+                    },
+                  ],
+                },
+              });
+              console.log("3");
+              //const events = await SystemJS.load('app/core/app_events');
+              const events = SystemJS.load('app/core/app_events');
+              console.log("4");
+              /*events.emit(AppEvents.alertSuccess, [
+                resp.status + ' (' + resp.statusText + ')',
+              ]);*/
+            /*} catch (error) {
+              const events = await SystemJS.load('app/core/app_events');
+              events.emit(AppEvents.alertError, [
+                error.status + ' (' + error.statusText + ')',
+                error.data.message,
+              ]);
+            }*/
+        //}
 
-        editor.remove( $(this).closest('tr'), {
-            title: 'Delete record',
-            message: 'Are you sure you wish to remove this record?',
-            buttons: 'Delete'
-
-        } );
-        */
     } );
 
 
@@ -745,15 +784,6 @@ export class DatatableRenderer {
 
     const $datatable = $(tableHolderId);
 
-    /*
-    const c = document.querySelector(tableHolderId);
-    if (c) {
-      console.log(c);
-      const r = c.getBoundingClientRect();
-      console.log(r);
-    }
-    #datatable-panel-table-' + this.panel.id
-    */
 
     /**
     const editor = new $.fn.dataTable.Editor('#datatable-panel-table-' + this.panel.id);

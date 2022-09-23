@@ -71,6 +71,9 @@ const panelDefaults = {
   searchEnabled: true,
   showCellBorders: false,
   showRowBorders: true,
+  /**
+  * showDelButton: false,
+  */
   hoverEnabled: true,
   orderColumnEnabled: true,
   compactRowsEnabled: false,
