@@ -651,12 +651,17 @@ export class DatatableRenderer {
         orderable: false
     });
 
-
+    const table_rows = this.table.rows;
     // Delete a record
     $('#datatable-panel-table-' + this.panel.id).on('click', 'td.editor-delete', function (e) {
-        //console.log("Delete pushed");
         //async () => {
-            const json_example = '{"rawSql": "update input_gekko.gekko set gps_longitude = 12.45 where gekko_id = 1;", "format": "table"}'
+            console.log(e);
+            const current_row = e.currentTarget._DT_CellIndex.row;
+            const request_number = table_rows[current_row][0];
+            console.log(request_number);
+            console.log(current_row);
+            //const json_example = '{"rawSql": "update input_gekko.gekko set gps_longitude = 12.45 where gekko_id = 1;", "format": "table"}'
+            const json_example = '{"rawSql": "update interface_grafana.reports_grafana set marked_for_deletion = true where request_no = ' + request_number +';", "format": "table"}'
             const payload = JSON.parse(json_example);
             console.log("1");
             console.log(payload);
