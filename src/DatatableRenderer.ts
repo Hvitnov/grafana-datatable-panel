@@ -470,6 +470,8 @@ export class DatatableRenderer {
       // with full width
       /* jshint loopfunc: true */
 
+
+
       columns.push({
             title: columnAlias,
             type: columnType,
@@ -509,6 +511,19 @@ export class DatatableRenderer {
         createdCell: (td: any, cellData: any, rowData: any, row: any, col: any) => {
           // orthogonal sort requires getting cell data differently
           const formattedData = $(td).html();
+
+          // MANUAL Hyperlink reference in cell
+          //if (col == 5) {
+            //formattedData = $(td).html('<a href="' + formattedData + '" download> Download</a>');
+          //}
+
+          //console.log("#####################################")
+          //console.log(td)
+          //console.log(cellData)
+          //console.log(rowData)
+          //console.log(row)
+          //console.log(col)
+          //console.log(formattedData)
           // can only evaluate thresholds on a numerical value
           // also - hidden columns have null data
           if (!isNumber(_this.table.rows[row][col])) {
@@ -704,6 +719,70 @@ export class DatatableRenderer {
         //}
 
     } );
+
+    $('#datatable-panel-table-' + this.panel.id).on('click', 'td.editor-delete', function (e) {
+        //async () => {
+            console.log(e);
+            // TODO: get index by column name as explained in https://stackoverflow.com/questions/59970542/row-callback-function-find-a-column-by-name-not-by-number
+            // TODO: Example - var index = table.columns().names().indexOf('Salary');
+            const current_row = e.currentTarget._DT_CellIndex.row;
+            const request_number = table_rows[current_row][0];
+            console.log(request_number);
+            console.log(current_row);
+            //const json_example = '{"rawSql": "update input_gekko.gekko set gps_longitude = 12.45 where gekko_id = 1;", "format": "table"}'
+            const json_example = '{"rawSql": "update interface_grafana.reports_grafana set marked_for_deletion = true where request_no = ' + request_number +';", "format": "table"}'
+            const payload = JSON.parse(json_example);
+            console.log("1");
+            console.log(payload);
+            //const ds = await getDataSourceSrv().get("PostgreSQL");
+            const ds = getDataSourceSrv().get("PostgreSQL");
+            console.log("2");
+            console.log(ds);
+            const datasource_uid = {uid: "rsT9iRmnk"};
+            console.log(datasource_uid);
+            //try {
+              //const resp = await getBackendSrv().datasourceRequest({
+              const resp = getBackendSrv().datasourceRequest({
+                method: 'POST',
+                //url: 'api/tsdb/query',
+                url: 'api/ds/query',
+                data: {
+                  queries: [
+                    {
+                      datasource: datasource_uid,
+                      refId: '1',
+                      ...payload,
+                    },
+                  ],
+                },
+              });
+              console.log("3");
+              //const events = await SystemJS.load('app/core/app_events');
+              const events = SystemJS.load('app/core/app_events');
+              console.log("4");
+              /*events.emit(AppEvents.alertSuccess, [
+                resp.status + ' (' + resp.statusText + ')',
+              ]);*/
+            /*} catch (error) {
+              const events = await SystemJS.load('app/core/app_events');
+              events.emit(AppEvents.alertError, [
+                error.status + ' (' + error.statusText + ')',
+                error.data.message,
+              ]);
+            }*/
+        //}
+
+    } );
+
+    /*
+    $('#datatable-panel-table-' + this.panel.id).dataTable( {"rowCallback": function( row: any, data: any, index: any ) {
+       console.log("link")
+        row = e.currentTarget._DT_CellIndex.row;
+        request_number = table_rows[current_row][9];
+        $('td:eq(9)', row).html( '<a href="'+data.filepath+'/'+data.fileName + '" download>Download</a>' );
+        }
+    });
+    */
 
 
     try {

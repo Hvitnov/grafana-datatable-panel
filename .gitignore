@@ -6,3 +6,5 @@ node_modules
 package-lock.json
 dist
 coverage
+yarn.lock
+package.json
