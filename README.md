@@ -206,4 +206,5 @@ plugins = "/path/to/grafana-plugins"
 Note when you run it in watch mode it will probably prompt error messages, and it's usually nothing that important. Just try to change up the code and you will see the terminal compile automatically. 
 
 - NEW change: 'npm i @grafana/runtime' might be needed for datatables when used in Grafana +9.0
+https://www.npmjs.com/package/@grafana/runtime
  
