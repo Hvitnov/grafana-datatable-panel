@@ -205,4 +205,5 @@ plugins = "/path/to/grafana-plugins"
 - Write 'yarn watch' to compile the plugin live (of course you have to refresh the browser to see the changes) 
 Note when you run it in watch mode it will probably prompt error messages, and it's usually nothing that important. Just try to change up the code and you will see the terminal compile automatically. 
 
+- NEW change: 'npm i @grafana/runtime' might be needed for datatables when used in Grafana +9.0
  
